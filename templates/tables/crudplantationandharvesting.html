@@ -1,0 +1,210 @@
+{% load static %}
+
+{% include 'accounts/navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+  <!-- button -->
+  <script src="https://kit.fontawesome.com/e494fe5a7b.js" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> 
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <title>CRUD Farmer</title>
+    <style>
+      .btn btn-primary{
+       background-color : #31B0D5;
+       color: white;
+       padding: 10px 20px;
+       border-radius: 4px;
+      border-color: #46b8da;
+       }
+       #mybutton{
+         position: fixed;
+         bottom: 50px;
+         right: 100px;
+       }
+       .btn{
+         size: 100cm;
+         color: green;
+       }
+       .table-wrapper{
+     margin: 10px 70px 70px;
+     box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+       }
+ 
+    .fl-table {
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: normal;
+        border: none;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100%;
+        white-space: nowrap;
+        background-color: white;
+    }
+  
+    .fl-table td, .fl-table th {
+        text-align: center;
+        padding: 8px;
+    }
+  
+    .fl-table td {
+        border-right: 1px solid #f8f8f8;
+        font-size: 12px;
+    }
+  
+    .fl-table thead th {
+        color: #ffffff;
+        background: #329377;
+    }
+  
+  
+    .fl-table thead th:nth-child(odd) {
+      color: #ffffff;
+      background: #4fc367;
+    }
+  
+    .fl-table tr:nth-child(even) {
+        background: #F8F8F8;
+    }
+    .input-box{
+      width: 100%;
+    }
+    </style>
+</head>
+<body>
+  <div style="margin-left:10%">
+  
+    <div class="text-center alert alert-info w3-green" style="margin: 0px; " >Plantation And Harvesting</div>
+
+        <div class="table-wrapper">
+          {% if crop %}
+          <table class="fl-table">
+              <thead>
+                <tr>
+                  <th scope="col">location</th>
+                  <th scope="col">Plot Id</th>
+                  <th scope="col">Crop id</th>
+                  <th scope="col">Date Of Preparation</th>
+                  <th scope="col">Date Of Plantation</th>
+                  <th scope="col">Start Of Harvasting</th>
+                  <th scope="col">End Of Harvesting</th>
+                  <th scope="col">Current Harvest</th>
+                  <th scope="col">Previous Harvest</th>
+                  <th scope="col">Accumulated Harvest</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for crops in crop %}
+                  <tr>
+                    <td>{{crops.location}}</td>
+                    <td>{{crops.plotid}}</td>
+                    <td>{{crops.cropid}}</td>
+                    <td>{{crops.dateofpreparation}}</td>
+                    <td>{{crops.dateofplantation}}</td>
+                    <td>{{crops.startofharvesting}}</td>
+                    <td>{{crops.endofharvesting}}</td>
+                    <td>{{crops.currentharvest}}</td>
+                    <td>{{crops.previousharvest}}</td>
+                    <td>{{crops.accumulatedharvest}}</td>
+                    <td>
+                      <a href="{% url 'editplantationandharvesting' crops.id %}" class="btn btn-warning btn-sm">Edit</a>
+                      <!-- <a href="" class="btn btn-danger btn-sm">Delete</a> -->
+                      <form action="{% url 'deleteplantationandharvesting' crops.id %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Delete">
+
+                      </form>
+
+                    </td>
+                  </tr>
+              {% endfor %}
+              <tbody>
+          </table>
+          {% else %}
+          <h2 style="text-align:center; ">no data</h2>
+          {% endif %}
+        </div>
+
+        <div class="container mt-5">
+            <div id="mybutton">
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa-solid fa-circle-plus fa-3x"></i></button>
+            </div>
+            <div class="modal" id="myModal">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Crop Form</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" method="post">
+                            {% csrf_token %}
+                              <form action="#">
+                                <div class="user-details">
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Location</span>
+                                        {{form.location}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                      <span class="details">Plot Id</span>
+                                      {{form.plotid}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Crop Id</span>
+                                        {{form.cropid}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Date Of Preparation</span>
+                                          {{form.dateofpreparation}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Date Of Plantation</span>
+                                        {{form.dateofplantation}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Start Of Harvasting</span>
+                                        {{form.startofharvesting}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">End Of Harvasting</span>
+                                        {{form.endofharvesting}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                        <span class="details">Current Harvest</span>
+                                        {{form.currentharvest}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                      <span class="details">Previous Harvest</span>
+                                      {{form.previousharvest}}
+                                    </div>
+                                    <div class="input-box" style="width: 100%;">
+                                      <span class="details">Accumulated Harvest</span>
+                                      {{form.accumulatedharvest}}
+                                    </div>
+                                  </div>
+                                  <div class="button">
+                                    <input type="submit" value="Add">
+                                  </div>
+                                </form>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+  </div>
+
+</body>
+</html>

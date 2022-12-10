@@ -1,0 +1,22 @@
+{% load static %}
+
+<style>
+    .float-child1, .float-child2{
+        display: inline-block;
+    }
+    .float-child2{
+        height: 116.989px;
+        width: 1000px;
+        float: right;
+    }
+</style>
+
+<div class="topbar">
+    <div class="float-child1">
+        <img src="{% static 'img/leaf.png' %}">
+    </div>
+    <div class="float-child2">
+        <h4 style="text-align: right; color : green;">welcome, {{request.user}}.  <a href="{% url 'logout' %}">LOGOUT</a></h4>
+    </div>
+    <hr>
+</div>
